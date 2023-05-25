@@ -1,9 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import "./App.css";
 import { useUserContext } from "./providers/UserContext";
 
+// useReducer
+
+const reducer = (state, action) => {
+    if (action.type === "buy_ingredients") {
+        return { money: state.money - 10 };
+    } else if (action.type === "sell_a_meal") {
+        return { money: state.money + 10 };
+    } else if (action.type === "celebrity_visit") {
+        return { money: state.money + 5000 };
+    }
+    return state;
+};
+
 function App() {
-    const [name, setName] = useState("");
+    // const [name, setName] = useState("");
     const [score, setScore] = useState(10);
     const [comment, setComment] = useState("");
 
@@ -50,16 +63,37 @@ function App() {
     };
 
     // Rule of hook and fetch
-    const [user, setUser] = useState([]);
-    const fetchData = () => {
-        fetch("https://randomuser.me/api/?results=1")
-            .then((response) => response.json())
-            .then((data) => setUser(data));
+    // const [user, setUser] = useState([]);
+    // const fetchData = () => {
+    //     fetch("https://randomuser.me/api/?results=1")
+    //         .then((response) => response.json())
+    //         .then((data) => setUser(data));
 
-            console.log(user.results)
+    //         console.log(user.results)
+    // };
+
+    // useEffect(() => fetchData(), []);
+
+    // useReducer
+    const initialState = { money: 100 };
+    const [state, dispatch] = useReducer(reducer, initialState);
+
+    // useRef
+    const formInputRef = useRef(null);
+
+    const focusInput = () => {
+        formInputRef.current.focus();
     };
 
-    useEffect(() => fetchData(), []);
+    const [name, setName] = useState("");
+    const renderCount = useRef(1);
+    const prevName = useRef('');
+    //when u use useRef, u are storing like {current: 1}
+
+    useEffect(() => {
+        // renderCount.current++;
+        prevName.current = name;
+    }, [name]);
 
     return (
         // controlled form component
@@ -135,16 +169,48 @@ function App() {
         //     <button onClick={clickHandler}>Toggle message</button>
         //     {toggle && <h2>Welcome to Little Lemon</h2>}
         // </>
+        // <>
+        //     {Object.keys(user).length > 0 ? (
+        //         <div>
+        //             <h1>Data Returned</h1>
+        //             <h2>First Name: {user.results[0].name.first}</h2>
+        //             <h2>Last Name: {user.results[0].name.last}</h2>
+        //         </div>
+        //     ) : (
+        //         <h1>Data pending...</h1>
+        //     )}
+        // </>
+
+        //useReducer
+        // <>
+        //     <h1>Wallet: {state.money}</h1>
+        //     <div>
+        //         <button onClick={() => dispatch({ type: "buy_ingredients" })}>
+        //             Shopping for veggies!
+        //         </button>
+        //         <button onClick={() => dispatch({ type: "sell_a_meal" })}>
+        //             Serve a meal to the customer
+        //         </button>
+        //         <button onClick={() => dispatch({ type: "celebrity_visit" })}>
+        //             Celebrity Visit
+        //         </button>
+        //     </div>
+        // </>
+
+        // useRef
+        // <>
+        //     <h1>Using useRef to access the underlying DOM</h1>
+        //     <input ref={formInputRef} type="text" />
+        //     <button onClick={focusInput}>Focus Input</button>
+        // </>
         <>
-            {Object.keys(user).length > 0 ? (
-                <div>
-                    <h1>Data Returned</h1>
-                    <h2>First Name: {user.results[0].name.first}</h2>
-                    <h2>Last Name: {user.results[0].name.last}</h2>
-                </div>
-            ) : (
-                <h1>Data pending...</h1>
-            )}
+            <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+            />
+            <div>My name is {name} and it used to be {prevName.current}</div>
+            <div>I rendered {renderCount.current} times</div>
         </>
     );
 }

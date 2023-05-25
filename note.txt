@@ -57,3 +57,16 @@ Make multiple hook calls in the same sequence
 FETCH api
 the fetch funtion is what's known as facade function meaning it's a function that looks like it's part of javascript but actually it is just a way for me to call a browser api from javascript.
 In other words, it's a way to access a piece of browser functionality that's outside of javascript.
+
+
+useReducer
+useReducer is a super powered useState.
+
+useRef
+useRef is used to go beyond the virtual dom and access the underlying DOM elements.
+A ref is very similar to state and it persist between renders of your component.
+If you want to persist data, use useRef.
+the basic use cases for using ref are to reference the elements inside of your html.
+Each element inside of your document has a ref attribute.
+
+Use Case: if you want to store previous state, use it.
