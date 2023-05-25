@@ -14,3 +14,46 @@ u should add id as key.
 when the order of your list items is prone to change, index as key is a problem.
 
 also don't use Math.random() as key. cause when the state change or ui loads, it will change the key too.
+
+
+Context API
+context api allows u to pass data through the component tree without having to pass "manually" at every level.
+not manually means under the hood, they still pass it. Aware of memory.
+It is the right tool that you need to share data that can be considered Global for a tree of react components.
+
+Context Provider allows consuming components to subscribe to context changes. this component accepts a value prop which is what will be passed to consuming components that are descendant of the this provider.
+
+
+impure functions and useEffect
+like external function call, like console.log(), calling api request
+contain the impure actions inside their own special areas.
+to do this, you need to use useEffect Hook
+
+useEffect(function() {
+    console.log(total);
+}, [])
+
+useEffect(() => console.log(total), [])
+
+arrow function as the first argument of the invocation of the useEffect hook.
+
+without dependency array, useEffect always happen when the state changes.
+
+If you want to render only one time, use empty [] as dependency. Meaning I'm not tracking any state of the variable.
+
+the dependency array determines when the useEffect hook will be invoked.
+
+    useEffect(() => {
+        document.title = toggle ? "Welcome to Little Lemon" : "using the useEffect hook" ;
+    }, [toggle]);
+dependency array watch for changes variable's value.
+
+Rules of Hooks
+Only call hooks from React Component function
+Only call hooks at the top level.
+Call multiple state or effect hooks
+Make multiple hook calls in the same sequence
+
+FETCH api
+the fetch funtion is what's known as facade function meaning it's a function that looks like it's part of javascript but actually it is just a way for me to call a browser api from javascript.
+In other words, it's a way to access a piece of browser functionality that's outside of javascript.
