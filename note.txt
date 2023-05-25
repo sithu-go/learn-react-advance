@@ -1,0 +1,16 @@
+KEY
+U should add key when you loop
+
+{todos.map((todo, index) => {
+    <ToDo key={index} id={todo.id} createdAt={todo.createdAt} />
+})}
+
+// U should aware that when u reverse the components.\
+setTodos([...todos].reverse())
+
+index as key will cause you problem.
+u should add id as key.
+
+when the order of your list items is prone to change, index as key is a problem.
+
+also don't use Math.random() as key. cause when the state change or ui loads, it will change the key too.
