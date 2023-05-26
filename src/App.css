@@ -40,3 +40,18 @@
 .read-the-docs {
   color: #888;
 } */
+
+.Button {
+    margin: 2px;
+}
+.PrimaryButton {
+    color: blueviolet;
+}
+
+.SecondaryButton {
+    color: aquamarine;
+}
+
+.notShow {
+    display: none;
+}

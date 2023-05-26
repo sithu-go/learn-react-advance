@@ -70,3 +70,30 @@ the basic use cases for using ref are to reference the elements inside of your h
 Each element inside of your document has a ref attribute.
 
 Use Case: if you want to store previous state, use it.
+
+
+
+React.cloneElement(element, [props])
+
+Modify children properties
+Add to children properties
+Extend Functionality of children
+
+const buttonElement = {
+    type: SubmitButton,
+    props: {
+        color: "green",
+        children: "Submit!",
+    },
+};
+
+const output = React.cloneElement(buttonElement, {disabled: false})
+
+{
+    type: SubmitButton,
+    props: {
+        color: "green",
+        children: "Submit!",
+        disabled: false,
+    }
+}

@@ -1,6 +1,14 @@
-import { useEffect, useReducer, useRef, useState } from "react";
+import {
+    Children,
+    cloneElement,
+    useEffect,
+    useReducer,
+    useRef,
+    useState,
+} from "react";
 import "./App.css";
 import { useUserContext } from "./providers/UserContext";
+import FeedbackForm from "./components/FeedbackForm";
 
 // useReducer
 
@@ -26,11 +34,11 @@ function App() {
     // useEffect
     const [toggle, setToggle] = useState(false);
 
-    useEffect(() => {
-        document.title = toggle
-            ? "Welcome to Little Lemon"
-            : "using the useEffect hook";
-    }, [toggle]);
+    // useEffect(() => {
+    //     document.title = toggle
+    //         ? "Welcome to Little Lemon"
+    //         : "using the useEffect hook";
+    // }, [toggle]);
 
     function clickHandler() {
         setToggle(!toggle);
@@ -87,13 +95,18 @@ function App() {
 
     const [name, setName] = useState("");
     const renderCount = useRef(1);
-    const prevName = useRef('');
+    const prevName = useRef("");
     //when u use useRef, u are storing like {current: 1}
 
-    useEffect(() => {
-        // renderCount.current++;
-        prevName.current = name;
-    }, [name]);
+    // useEffect(() => {
+    //     // renderCount.current++;
+    //     prevName.current = name;
+    // }, [name]);
+
+    // testing form
+    const handleTestingSubmit = ({score, comment}) => {
+        console.log("sdsd", score, comment)
+    };
 
     return (
         // controlled form component
@@ -203,14 +216,61 @@ function App() {
         //     <input ref={formInputRef} type="text" />
         //     <button onClick={focusInput}>Focus Input</button>
         // </>
+        // <>
+        //     <input
+        //         type="text"
+        //         value={name}
+        //         onChange={(e) => setName(e.target.value)}
+        //     />
+        //     <div>My name is {name} and it used to be {prevName.current}</div>
+        //     <div>I rendered {renderCount.current} times</div>
+        // </>
+
+        // Component Composition
+        // <>
+        //     <header>Little Lemon Restaurant</header>
+        //     <Alert>
+        //         <h4>Delete Account</h4>
+        //         <p>
+        //             Are you sure you want to procced? You will miss all your
+        //             delicious recipes!
+        //         </p>
+        //         <DeleteButton />
+        //     </Alert>
+        // </>
+
+        // React.Children
+        // <>
+        //     <Row spacing={32}>
+        //         <p>Pizza Margarita</p>
+        //         <p>2</p>
+        //         <p>30$</p>
+        //         <p>18:30</p>
+        //         <p>John</p>
+        //     </Row>
+        // </>
+
+        // Spread Operator
+        // <div>
+        //     <header>Little Lemon Restaurant</header>
+        //     <ButtonS type="primary" onClick={() => alert("Signing up!")}>
+        //         Sign up
+        //     </ButtonS>
+        //     <LoginButton type="secondary" onClick={() => alert("Signing up, BABY!")}>
+        //         Login
+        //     </LoginButton>
+        // </div>
+
+        // Testing Library
+        // <div>
+        //     <a href="https://littlelemon.com">
+        //         {/* <h1>Little Lemon Restaurant</h1> */}
+        //         <h1 className="notShow">Little Lemon Restaurant</h1>
+        //     </a>
+        // </div>
+
         <>
-            <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-            />
-            <div>My name is {name} and it used to be {prevName.current}</div>
-            <div>I rendered {renderCount.current} times</div>
+            <FeedbackForm onFormSubmit={handleTestingSubmit} />
         </>
     );
 }
@@ -309,5 +369,70 @@ function ListOfGoals({ goals }) {
         </>
     );
 }
+
+// Component Composition
+const Button = ({ children, backgroundColor }) => {
+    return <button style={{ backgroundColor }}>{children}</button>;
+};
+
+const Alert = ({ children }) => {
+    return (
+        <>
+            <div />
+            <div>{children}</div>
+        </>
+    );
+};
+
+const DeleteButton = () => {
+    return <Button backgroundColor="red">Delete</Button>;
+};
+
+// React.Children.amp and React.cloneElement()
+
+const Row = ({ children, spacing }) => {
+    const childStyle = {
+        marginLeft: `${spacing}px`,
+    };
+    return (
+        <div style={{ display: "flex" }}>
+            {Children.map(children, (child, index) => {
+                // return child;
+                return cloneElement(child, {
+                    style: {
+                        ...child.props.style,
+                        // ...childStyle
+                        ...(index > 0 ? childStyle : {}),
+                    },
+                });
+            })}
+            {/* {children} */}
+        </div>
+    );
+};
+
+// SpreadOperator
+const ButtonS = ({ type, children, ...buttonProps }) => {
+    const className = type === "primary" ? "PrimaryButton" : "SecondaryButton";
+    return (
+        <button className={`Button ${className}`} {...buttonProps}>
+            {children}
+        </button>
+    );
+};
+
+// beaware that when using spread operator, order matters
+const LoginButton = ({ type, children, ...buttonProps }) => {
+    console.log(buttonProps);
+    return (
+        <ButtonS
+            type="secondary"
+            {...buttonProps} //here
+            onClick={() => alert("Logging in!")} //here
+        >
+            {children}
+        </ButtonS>
+    );
+};
 
 export default App;
