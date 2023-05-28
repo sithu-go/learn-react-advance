@@ -97,3 +97,38 @@ const output = React.cloneElement(buttonElement, {disabled: false})
         disabled: false,
     }
 }
+
+Summary
+
+Component Composition adn use of the children prop
+Containment and Specialization
+For components that don't knwo children beforehand, Uses special children prop
+
+Specialization
+To define components as special cases
+like creating a confirmation dialog based on a dialog
+
+React.cloneElement
+Clones and returns a new element
+
+React.Children.map
+Manipulates children
+
+Spread Operator(...)
+Enables copying and merging
+
+Cross cutting concerns
+Cross cutting concerns refers to generic functionality that is not related to application business logic and that is needed in many places like handling errors, authentication or fetching data
+Understand the components despite being the primary unit of code reuse and react don't fit this type of logic
+
+Two techinques for cross-cutting concerns
+1: Higher-order component (HOC)
+Enables powerful abstraction for creating cross-cutting concerns eg. how data fetching can be abstracted using this technique.
+Higher order component is just a function that takes a component and returns a new one.
+
+2: Render props
+Special prop
+new props injected as function parameters
+which is a special prop you add to your components with a particular attribute of being a function that returns a react element.
+
+Oppose to HOC, the new props are injected dynamically as the parameters of the function.
